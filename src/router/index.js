@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
+import Reunion from '../views/Reunion.vue'
 import Projects from '../views/Projects.vue'
 import Team from '../views/Team.vue'
 
@@ -11,6 +12,11 @@ const routes = [
     path: '/',
     name: 'dashboard',
     component: Dashboard
+  },
+  {
+    path: '/reunion',
+    name: 'reunion',
+    component: Reunion
   },
   {
     path: '/projects',
