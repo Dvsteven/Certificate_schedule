@@ -6,11 +6,12 @@
     inset
     
   >
+  <!--Propiedades footer-->
     <v-card
       class="flex"
       flat
       tile
-      color="#00457C"
+      color="#00457C" 
       :elevation="5"
     >
 

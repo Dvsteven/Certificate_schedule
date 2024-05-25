@@ -22,22 +22,6 @@
         <span>Sort person</span>
       </v-tooltip>
       </v-layout>
-      <v-card flat  v-for="project in projects" :key="project.title" class="mb-1">
-          <v-layout row wrap :class="`pa-3 project ${project.status}`">
-            <v-flex xs12 md6>
-                <div class="caption grey--text">Project title</div>
-                <div >{{project.title}}</div>
-            </v-flex>
-            <v-flex xs6 sm4 md2>
-                <div class="caption grey--text">Person</div>
-                <div >{{project.person}}</div>
-            </v-flex>
-            <v-flex xs6 sm4 md2>
-                <div class="caption grey--text">Due By</div>
-                <div >{{project.due}}</div>
-            </v-flex>
-          </v-layout>
-      </v-card>
     </v-container>
   </div>
 </template>

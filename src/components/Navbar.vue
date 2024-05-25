@@ -1,5 +1,6 @@
 <template>
    <nav>
+    <!--Colores navbar-->
        <v-app-bar  color="#00457C" dark app >
            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
            <v-toolbar-title class="text-uppercase ">
@@ -28,7 +29,8 @@
                 <v-icon right>exit_to_app</v-icon>
              </v-btn>
        </v-app-bar>
-      <v-navigation-drawer  v-model="drawer" dark app class="red darken-4">
+       <!--Color de columna principal-->
+      <v-navigation-drawer  v-model="drawer" dark app class="blue darken-4">
           <v-layout column align-center>
                <v-flex class="mt-5"> 
                     <v-avatar size="100">
