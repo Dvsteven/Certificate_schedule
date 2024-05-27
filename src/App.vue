@@ -1,13 +1,15 @@
 <template>
   <v-app>
-  <Navbar/>
+    <template v-if="$route.name !== 'Login'">
+      <Navbar/>
       <v-content class="ma-4">
         <router-view></router-view>
       </v-content>
-     <Footer/>
+      <Footer/>
+    </template>
+    <router-view v-else></router-view>
   </v-app>
- 
-</template>
+</template> 
 
 <script>
 import Navbar from '@/components/Navbar'
@@ -16,12 +18,16 @@ export default {
   name: 'App',
 
   components: {
-   Navbar,
-   Footer
+    Navbar,
+    Footer
   },
-
-  data: () => ({
-    //
-  }),
+  data() {
+    return {
+      isLoggedIn: false
+    };
+  },
+  created() {
+    this.isLoggedIn = localStorage.getItem('isLoggedIn');
+  }
 };
 </script>

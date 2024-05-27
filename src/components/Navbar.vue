@@ -61,7 +61,7 @@ export default {
    data: () => ({
       drawer: true,
       links :[
-          {icon: 'dashboard', text:'Panel principal', route: '/'},
+          {icon: 'dashboard', text:'Panel principal', route: '/dashboard'},
           {icon: 'event', text:'Agenda General', route: '/agenda'},
           {icon: 'mail', text:'Enviar correo', route: '/correo'},
           {icon: 'search', text:'Visualizar vigencias', route: '/vigency'},
