@@ -89,7 +89,5 @@ export default {
         this.dateFormatted = this.formatDate(this.date)
       },
     },
-
-
 }
 </script>

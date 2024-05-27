@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
-import Reunion from '../views/Reunion.vue'
+// import Reunion from '../views/Reunion.vue'
 import Projects from '../views/Projects.vue'
 import Team from '../views/Team.vue'
 
@@ -13,11 +13,11 @@ const routes = [
     name: 'dashboard',
     component: Dashboard
   },
-  {
-    path: '/reunion',
-    name: 'reunion',
-    component: Reunion
-  },
+  // {
+  //   path: '/agenda',
+  //   name: 'agenda',
+  //   component: Agenda
+  // },
   {
     path: '/projects',
     name: 'projects',

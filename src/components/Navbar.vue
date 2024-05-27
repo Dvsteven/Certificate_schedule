@@ -62,11 +62,9 @@ export default {
       drawer: true,
       links :[
           {icon: 'dashboard', text:'Panel principal', route: '/'},
-          {icon: 'group', text:'Reuniones', route: '/reunion'},
-          {icon: 'event', text:'Agendar vigencia', route: '/vigencias'},
+          {icon: 'event', text:'Agenda General', route: '/agenda'},
           {icon: 'mail', text:'Enviar correo', route: '/correo'},
           {icon: 'search', text:'Visualizar vigencias', route: '/vigency'},
-          {icon: 'alarm', text:'Recordatorios', route: '/reminders'},
           {icon: 'folder', text:'Productos', route: '/projects'},
           {icon: 'person', text:'Team', route: '/team'}
       ]
@@ -75,8 +73,6 @@ export default {
     components: {
     Popup
   },
-
-   
 }
 </script>
 <style scoped>
