@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue';
 import Dashboard from '../views/Dashboard.vue'
 import Agenda from '../views/Agenda.vue'
+import Visualizar from '../views/Visualizar.vue'
 import Projects from '../views/Projects.vue'
 import Team from '../views/Team.vue'
 
@@ -24,6 +25,11 @@ const routes = [
     path: '/agenda',
     name: 'agenda',
     component: Agenda
+  },
+  {
+    path: '/vigency',
+    name: 'Vigencias',
+    component: Visualizar
   },
   {
     path: '/projects',

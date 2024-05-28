@@ -16,7 +16,7 @@
           <v-form @submit.prevent="login">
             <v-text-field 
               v-model="username" 
-              label="Email" 
+              label="Usuario"
               prepend-inner-icon="mdi-account"
               outlined
               dense
