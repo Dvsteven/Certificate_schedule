@@ -9,6 +9,7 @@ import Team from '../views/Team.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  //Ruta principal, Login
   {
     path: '/',
     name: 'Login',
@@ -46,8 +47,9 @@ const router = new VueRouter({
   routes
 })
 
+//Un poco de logica javascript para simular el login con "LocalSotrage"
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = localStorage.getItem('isLoggedIn'); // Aquí deberías verificar si el usuario está autenticado, por ejemplo, a través de un token guardado en localStorage
+  const isLoggedIn = localStorage.getItem('isLoggedIn'); 
 
   if (to.meta.requiresAuth && !isLoggedIn) {
     next('/');
