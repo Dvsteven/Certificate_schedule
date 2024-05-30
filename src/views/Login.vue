@@ -58,7 +58,7 @@ export default {
     login() {
       if (this.username === 'root' && this.password === '1004668546') {
         localStorage.setItem('isLoggedIn', true);
-        this.$router.push({ name: 'dashboard' });
+        this.$router.push({ name: 'Panel Principal' });
       } else {
         alert('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
       }
