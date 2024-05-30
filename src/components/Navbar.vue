@@ -63,10 +63,9 @@ export default {
       links :[
           {icon: 'dashboard', text:'Panel principal', route: '/dashboard'},
           {icon: 'event', text:'Agenda General', route: '/agenda'},
-          {icon: 'mail', text:'Enviar correo', route: '/correo'},
+          {icon: 'mail', text:'Enviar correo', route: '/email'},
           {icon: 'search', text:'Visualizar vigencias', route: '/vigency'},
           {icon: 'folder', text:'Productos', route: '/projects'},
-          {icon: 'person', text:'Team', route: '/team'}
       ]
      
     }),

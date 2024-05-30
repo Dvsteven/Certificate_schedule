@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     login() {
-      if (this.username === 'usuario' && this.password === 'contraseña') {
+      if (this.username === 'root' && this.password === '1004668546') {
         localStorage.setItem('isLoggedIn', true);
         this.$router.push({ name: 'dashboard' });
       } else {
