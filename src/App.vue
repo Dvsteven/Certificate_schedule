@@ -1,33 +1,57 @@
 <template>
   <v-app>
     <template v-if="$route.name !== 'Login'">
-      <Navbar/>
+      <component :is="navbarComponent" />
       <v-content class="ma-4">
         <router-view></router-view>
       </v-content>
-      <Footer/>
+      <component :is="footerComponent" />
     </template>
     <router-view v-else></router-view>
   </v-app>
-</template> 
+</template>
 
 <script>
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-export default {
-  name: 'App',
+import NavbarUser from './components/NavbarUser.vue';
+import NavbarAdmin from './components/NavbarAdmin.vue';
+import FooterUser from './components/FooterUser.vue';
+import FooterAdmin from './components/FooterAdmin.vue';
 
+export default {
   components: {
-    Navbar,
-    Footer
+    NavbarUser,
+    NavbarAdmin,
+    FooterUser,
+    FooterAdmin
   },
   data() {
     return {
-      isLoggedIn: false
+      userType: localStorage.getItem('userType')
     };
   },
-  created() {
-    this.isLoggedIn = localStorage.getItem('isLoggedIn');
+  computed: {
+    navbarComponent() {
+      return this.userType === 'admin' ? 'NavbarAdmin' : 'NavbarUser';
+    },
+    footerComponent() {
+      return this.userType === 'admin' ? 'FooterAdmin' : 'FooterUser';
+    }
+  },
+  watch: {
+    '$route'() {
+      this.updateUserType();
+    }
+  },
+  methods: {
+    updateUserType() {
+      this.userType = localStorage.getItem('userType');
+    }
+  },
+  mounted() {
+    window.addEventListener('storage', this.updateUserType);
+  },
+  beforeDestroy() {
+    window.removeEventListener('storage', this.updateUserType);
   }
 };
 </script>

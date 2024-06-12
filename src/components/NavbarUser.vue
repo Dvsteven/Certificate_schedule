@@ -59,9 +59,8 @@ export default {
   data: () => ({
     drawer: true,
     miniVariant: false,
-    darkMode: false,
     links: [
-      { icon: 'dashboard', text: 'Panel principal', route: '/dashboard' },
+      { icon: 'dashboard', text: 'Panel principal', route: '/UserDashboard' },
       { icon: 'event', text: 'Agenda General', route: '/agenda' },
       { icon: 'mail', text: 'Enviar correo', route: '/email' },
       { icon: 'search', text: 'Visualizar vigencias', route: '/vigency' }

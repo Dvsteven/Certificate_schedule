@@ -51,14 +51,21 @@ export default {
     return {
       username: '',
       password: '',
-      showFormImage: false // Variable para controlar la visibilidad de la imagen del formulario
+      showFormImage: false
     };
   },
   methods: {
     login() {
-      if (this.username === 'root' && this.password === '1004668546') {
+      if (this.username === 'admin' && this.password === 'adminpassword') {
         localStorage.setItem('isLoggedIn', true);
-        this.$router.push({ name: 'Panel Principal' });
+        localStorage.setItem('userType', 'admin');
+        this.$router.push({ name: 'AdminDashboard' });
+        this.$emit('userTypeChanged');
+      } else if (this.username === 'user' && this.password === 'userpassword') {
+        localStorage.setItem('isLoggedIn', true);
+        localStorage.setItem('userType', 'user');
+        this.$router.push({ name: 'UserDashboard' });
+        this.$emit('userTypeChanged');
       } else {
         alert('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
       }
