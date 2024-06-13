@@ -33,7 +33,7 @@
             <p class="white--text subheading mt-1 text-center" v-if="!miniVariant">Administrador</p>
           </v-flex>
           <v-flex class="mt-4 mb-4">
-            <v-btn color="primary" @click="mostrarModal = true" :class="{ 'mini-button': miniVariant }">
+            <v-btn color="primary" @click="showModal = true" :class="{ 'mini-button': miniVariant }">
               <v-icon left>add</v-icon>
               <span v-if="!miniVariant">Nuevo Usuario</span>
             </v-btn>
@@ -51,30 +51,43 @@
         </v-list>
       </v-responsive>
     </v-navigation-drawer>
+    <!-- Modal para agregar usuario -->
+    <UserModal :show="showModal" @close="showModal = false" @add-user="addUser" />
   </div>
 </template>
 
 <script>
+import UserModal from '@/components/UserModal.vue';
+
 export default {
+  components: {
+    UserModal
+  },
   data: () => ({
     drawer: true,
     miniVariant: false,
+    showModal: false,
+    users: JSON.parse(localStorage.getItem('users')) || [], // Obtener la lista de usuarios de localStorage
     links: [
-      { icon: 'dashboard', text: 'Usuarios', route: '/usuarios' },
-      { icon: 'event', text: 'Licencias', route: '/licencias' },
-      { icon: 'mail', text: 'Certificados', route: '/certificados' },
-      { icon: 'search', text: 'Reportes', route: '/reportes' },
-      { icon: 'search', text: 'Agenda de eventos', route: '/agenda' }
+      { icon: 'mdi-account', text: 'Usuarios', route: '/viewsAdmin/usuarios' },
+      { icon: 'mdi-license', text: 'Licencias', route: '/licencias' },
+      { icon: 'mdi-certificate', text: 'Certificados', route: '/certificados' },
+      { icon: 'mdi-file-chart', text: 'Reportes', route: '/reportes' },
+      { icon: 'mdi-calendar', text: 'Agenda de eventos', route: '/agenda' },
     ]
   }),
   methods: {
     goToLogin() {
-      // Redirigir al usuario a la página de inicio de sesión
+      localStorage.removeItem('isLoggedIn');
       this.$router.push({ name: 'Login' });
     },
     toggleDrawer() {
-      // Cambiar el estado de la barra lateral entre expandida y minimizada
       this.miniVariant = !this.miniVariant;
+    },
+    addUser(newUser) {
+      this.users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(this.users)); // Guardar usuarios en localStorage
+      this.$router.push({ name: 'Usuarios' });
     }
   }
 };

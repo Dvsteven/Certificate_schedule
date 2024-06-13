@@ -64,7 +64,7 @@ export default {
       } else if (this.username === 'user' && this.password === 'userpassword') {
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('userType', 'user');
-        this.$router.push({ name: 'UserDashboard' });
+        this.$router.push({ name: 'Panel Principal' });
         this.$emit('userTypeChanged');
       } else {
         alert('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
