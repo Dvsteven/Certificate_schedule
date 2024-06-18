@@ -55,13 +55,13 @@
             class="mb-4"
             required
           ></v-select>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+            <v-btn color="blue darken-1" type="submit" text>Aceptar</v-btn>
+          </v-card-actions>
         </v-form>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-        <v-btn color="blue darken-1" type="submit" @click="addUser">Aceptar</v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -82,9 +82,9 @@ export default {
       area: '',
       licencia: '',
       certificado: '',
-      areas: ['Recursos Humanos', 'Soporte Técnico', 'Calidad'],
-      licencias: ['Licencia A', 'Licencia B', 'Licencia C'],
-      certificados: ['Certificado X', 'Certificado Y', 'Certificado Z']
+      areas: ['Recursos Humanos', 'Soporte', 'Tecnologia'],
+      licencias: ['Windows 10 Pro', 'Office 2019', 'Adobe Photohsop'], 
+      certificados: ['Certificado X', 'Certificado Y', 'Certificado'], 
     };
   },
   methods: {
@@ -99,40 +99,26 @@ export default {
         area: this.area,
         licencia: this.licencia,
         certificado: this.certificado,
-        estado: 'Activo' // Aquí podrías establecer un estado predeterminado si es necesario
+        estado: 'Activo' // Estado por defecto
       };
       this.$emit('add-user', newUser);
+      this.resetForm();
       this.close();
+    },
+    resetForm() {
+      this.nombre = '';
+      this.apellido = '';
+      this.email = '';
+      this.area = '';
+      this.licencia = '';
+      this.certificado = '';
     }
   }
 };
 </script>
 
 <style scoped>
-.v-card {
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.headline {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
 .mb-4 {
-  margin-bottom: 1.5rem;
-}
-
-.v-card-actions {
-  padding: 16px;
-  background-color: #f5f5f5;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  text-align: right;
-}
-
-.v-btn {
-  min-width: 100px;
+  margin-bottom: 1rem;
 }
 </style>

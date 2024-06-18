@@ -48,16 +48,52 @@
               <v-list-item-title v-if="!miniVariant">{{ link.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
+          <!-- Submenú de Licencias -->
+          <v-list-group>
+            <template v-slot:activator>
+              <v-list-item-action>
+                <v-icon>mdi-license</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title v-if="!miniVariant">Licencias</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item v-for="category in licenseCategories" :key="category.text" @click="navigateToCategory('Licencias', category.route)">
+              <v-list-item-content>
+                <v-list-item-title>{{ category.text }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+
+          <!-- Submenú de Certificados -->
+          <v-list-group>
+            <template v-slot:activator>
+              <v-list-item-action>
+                <v-icon>mdi-certificate</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title v-if="!miniVariant">Certificados</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item v-for="category in certificateCategories" :key="category.text" @click="navigateToCategory('Certificados', category.route)">
+              <v-list-item-content>
+                <v-list-item-title>{{ category.text }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+
         </v-list>
       </v-responsive>
     </v-navigation-drawer>
+    
     <!-- Modal para agregar usuario -->
     <UserModal :show="showModal" @close="showModal = false" @add-user="addUser" />
   </div>
 </template>
 
 <script>
-import UserModal from '@/components/UserModal.vue';
+import UserModal from '../components/UserModal.vue';
 
 export default {
   components: {
@@ -67,27 +103,35 @@ export default {
     drawer: true,
     miniVariant: false,
     showModal: false,
-    users: JSON.parse(localStorage.getItem('users')) || [], // Obtener la lista de usuarios de localStorage
     links: [
       { icon: 'mdi-account', text: 'Usuarios', route: '/viewsAdmin/usuarios' },
-      { icon: 'mdi-license', text: 'Licencias', route: '/licencias' },
-      { icon: 'mdi-certificate', text: 'Certificados', route: '/certificados' },
-      { icon: 'mdi-file-chart', text: 'Reportes', route: '/reportes' },
-      { icon: 'mdi-calendar', text: 'Agenda de eventos', route: '/agenda' },
+      { icon: 'mdi-file-chart', text: 'Reportes', route: '/viewsAdmin/reportes' },
+      { icon: 'mdi-calendar', text: 'Agenda de eventos', route: '/viewsAdmin/agenda' },
+    ],
+    licenseCategories: [
+      { text: 'Windows', route: '/viewsAdmin/licencias/windows' },
+      { text: 'Office', route: '/viewsAdmin/licencias/office' },
+      { text: 'APPA', route: '/viewsAdmin/licencias/appa' }
+    ],
+    certificateCategories: [
+      { text: 'Certificados de Seguridad', route: '/viewsAdmin/certificados/seguridad' },
+      { text: 'Certificados de Calidad', route: '/viewsAdmin/certificados/calidad' },
+      { text: 'Certificados de Cumplimiento', route: '/viewsAdmin/certificados/cumplimiento' }
     ]
   }),
   methods: {
     goToLogin() {
-      localStorage.removeItem('isLoggedIn');
       this.$router.push({ name: 'Login' });
     },
     toggleDrawer() {
       this.miniVariant = !this.miniVariant;
     },
+    navigateToCategory(type, route) {
+      this.$router.push(route);
+    },
     addUser(newUser) {
-      this.users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(this.users)); // Guardar usuarios en localStorage
-      this.$router.push({ name: 'Usuarios' });
+      // Emite un evento al componente principal o maneja aquí la lógica
+      this.$emit('add-user', newUser);
     }
   }
 };

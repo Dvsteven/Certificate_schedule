@@ -7,26 +7,20 @@
             Lista de Usuarios
           </v-card-title>
           <v-card-text>
-            <v-row>
-              <v-col v-for="(user, index) in users" :key="index" cols="12" md="6" lg="4">
-                <v-card class="pa-3 mb-4">
-                  <v-card-title>{{ user.nombre }} {{ user.apellido }}</v-card-title>
-                  <v-card-subtitle>{{ user.email }}</v-card-subtitle>
-                  <v-card-subtitle>{{ user.area }}</v-card-subtitle>
-                  <v-card-subtitle>{{ user.licencia }}</v-card-subtitle>
-                  <v-card-subtitle>{{ user.certificado }}</v-card-subtitle>
-                  <v-card-subtitle :class="user.estado === 'Activo' ? 'green--text' : 'red--text'">{{ user.estado }}</v-card-subtitle>
-                  <v-row class="mt-4">
-                    <v-col cols="6">
-                      <v-btn color="blue darken-1" dark @click="editarUsuario(user)">Editar</v-btn>
-                    </v-col>
-                    <v-col cols="6">
-                      <v-btn color="red darken-1" dark @click="eliminarUsuario(index)">Eliminar</v-btn>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </v-col>
-            </v-row>
+            <v-data-table
+              :headers="headers"
+              :items="users"
+              item-key="email"
+              class="elevation-1"
+            >
+              <template v-slot:item.estado="{ item }">
+                <span :class="item.estado === 'Activo' ? 'green--text' : 'red--text'">{{ item.estado }}</span>
+              </template>
+              <template v-slot:item.acciones="{ item, index }">
+                <v-btn color="blue darken-1" small @click="editarUsuario(item)">Editar</v-btn>
+                <v-btn color="red darken-1" small @click="eliminarUsuario(index)">Eliminar</v-btn>
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-card>
       </v-col>
@@ -38,37 +32,48 @@
 export default {
   data() {
     return {
+      headers: [
+        { text: 'Nombre', value: 'nombre' },
+        { text: 'Apellido', value: 'apellido' },
+        { text: 'Correo Electrónico', value: 'email' },
+        { text: 'Área', value: 'area' },
+        { text: 'Licencia', value: 'licencia' },
+        { text: 'Certificado', value: 'certificado' },
+        { text: 'Estado', value: 'estado' },
+        { text: 'Acciones', value: 'acciones', sortable: false }
+      ],
       users: []
     };
   },
   mounted() {
-    // Cargar usuarios desde localStorage al montar el componente
     this.loadUsers();
+    this.$root.$on('user-added', this.agregarUsuario);
+  },
+  beforeDestroy() {
+    this.$root.$off('user-added', this.agregarUsuario);
   },
   methods: {
     loadUsers() {
       this.users = JSON.parse(localStorage.getItem('users')) || [];
     },
     guardarUsuarios() {
-      // Guardar usuarios en localStorage
       localStorage.setItem('users', JSON.stringify(this.users));
     },
     agregarUsuario(newUser) {
       this.users.push(newUser);
       this.guardarUsuarios();
     },
-    editarUsuario(index, editedUser) {
-      this.users.splice(index, 1, editedUser);
-      this.guardarUsuarios();
-    },
+    // editarUsuario(user) {
+    //   console.log('Editar usuario:', user);
+    //   // Aquí puedes abrir un modal de edición
+    // },
     eliminarUsuario(index) {
-      this.users.splice(index, 1);
+      this.users[index].estado = 'Inactivo';
       this.guardarUsuarios();
     }
   }
 };
 </script>
-
 
 <style scoped>
 .green--text {
