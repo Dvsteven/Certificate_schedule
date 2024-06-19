@@ -33,9 +33,15 @@
             <p class="white--text subheading mt-1 text-center" v-if="!miniVariant">Administrador</p>
           </v-flex>
           <v-flex class="mt-4 mb-4">
-            <v-btn color="primary" @click="showModal = true" :class="{ 'mini-button': miniVariant }">
-              <v-icon left>add</v-icon>
-              <span v-if="!miniVariant">Nuevo Usuario</span>
+            <!-- Botón para mostrar el modal de Registrar Licencias -->
+            <v-btn block color="primary" @click="showLicensesModal = true" :class="{ 'mini-button': miniVariant }">
+              <v-icon left>mdi-plus</v-icon>
+              <span v-if="!miniVariant">Registrar licencias</span>
+            </v-btn>
+            <!-- Botón para mostrar el modal de Registrar Certificados -->
+            <v-btn block color="primary" @click="showCertificatesModal = true" :class="{ 'mini-button': miniVariant }">
+              <v-icon left>mdi-plus</v-icon>
+              <span v-if="!miniVariant">Registrar certificados</span>
             </v-btn>
           </v-flex>
         </v-layout>
@@ -86,23 +92,30 @@
         </v-list>
       </v-responsive>
     </v-navigation-drawer>
-    
-    <!-- Modal para agregar usuario -->
-    <UserModal :show="showModal" @close="showModal = false" @add-user="addUser" />
+
+    <!-- Modal para Registrar Licencias -->
+    <LicenseModal :show="showLicensesModal" @close="showLicensesModal = false" @add-license="addLicense" />
+
+    <!-- Modal para Registrar Certificados -->
+    <CertificateModal :show="showCertificatesModal" @close="showCertificatesModal = false" @add-certificate="addCertificate" />
   </div>
 </template>
 
 <script>
-import UserModal from '../components/UserModal.vue';
+import LicenseModal from '@/components/LicenseModal.vue';
+import CertificateModal from '@/components/CertificateModal.vue';
+
 
 export default {
   components: {
-    UserModal
+    LicenseModal,
+    CertificateModal
   },
   data: () => ({
     drawer: true,
     miniVariant: false,
-    showModal: false,
+    showLicensesModal: false,
+    showCertificatesModal: false,
     links: [
       { icon: 'mdi-account', text: 'Usuarios', route: '/viewsAdmin/usuarios' },
       { icon: 'mdi-file-chart', text: 'Reportes', route: '/viewsAdmin/reportes' },
@@ -129,19 +142,17 @@ export default {
     navigateToCategory(type, route) {
       this.$router.push(route);
     },
-    addUser(newUser) {
-      // Emite un evento al componente principal o maneja aquí la lógica
-      this.$emit('add-user', newUser);
+    openLicensesModal() {
+      this.showLicensesModal = true;
+    },
+    openCertificatesModal() {
+      this.showCertificatesModal = true;
     }
   }
 };
 </script>
 
 <style scoped>
-.linea {
-  border-top: 1px solid white;
-  margin: 10px 0;
-}
 .avatar {
   transition: width 0.3s, height 0.3s;
 }
@@ -151,8 +162,6 @@ export default {
   align-items: center;
   justify-content: center;
   height: 40px;
-}
-.mini-button v-icon {
-  margin-right: 0;
+  margin-bottom: 10px;
 }
 </style>

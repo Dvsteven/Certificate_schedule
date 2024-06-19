@@ -7,6 +7,10 @@
             Lista de Usuarios
           </v-card-title>
           <v-card-text>
+            <v-btn color="primary" @click="showModal = true">
+              <v-icon left>add</v-icon>
+              Nuevo Registro
+            </v-btn>
             <v-data-table
               :headers="headers"
               :items="users"
@@ -25,13 +29,22 @@
         </v-card>
       </v-col>
     </v-row>
+    
+    <!-- Modal para agregar usuario -->
+    <UserModal :show="showModal" @close="showModal = false" @add-user="agregarUsuario" />
   </v-container>
 </template>
 
 <script>
+import UserModal from '../../components/UserModal.vue';
+
 export default {
+  components: {
+    UserModal
+  },
   data() {
     return {
+      showModal: false,
       headers: [
         { text: 'Nombre', value: 'nombre' },
         { text: 'Apellido', value: 'apellido' },
@@ -63,10 +76,6 @@ export default {
       this.users.push(newUser);
       this.guardarUsuarios();
     },
-    // editarUsuario(user) {
-    //   console.log('Editar usuario:', user);
-    //   // Aquí puedes abrir un modal de edición
-    // },
     eliminarUsuario(index) {
       this.users[index].estado = 'Inactivo';
       this.guardarUsuarios();
