@@ -56,8 +56,8 @@ export default {
         nombre: this.nombre,
         tipo: this.tipo
       };
-      // Emitir el evento 'add-license' con el tipo de licencia y los datos
-      this.$emit('add-license', newLicense, this.tipo);
+      // Emitir el evento 'add-license' con los datos de la nueva licencia
+      this.$emit('add-license', newLicense);
       this.resetForm();
       this.close();
     },

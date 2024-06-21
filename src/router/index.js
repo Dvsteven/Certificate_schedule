@@ -11,10 +11,8 @@ import AdminDashboard from '../views/viewsAdmin/AdminDashboard.vue'
 import Usuarios from '../views/viewsAdmin/Usuarios.vue'
 import Reportes from '../views/viewsAdmin/Reportes.vue'
 import AdminAgenda from '../views/viewsAdmin/Agenda.vue'
-//subvistas de aadmin
-import WindowsLicencias from '../views/viewsAdmin/Licencias/WindowsLicencias.vue';
-import OfficeLicencias from '../views/viewsAdmin/Licencias/OfficeLicencias.vue';
-import AppaLicencias from '../views/viewsAdmin/Licencias/AppaLicencias.vue';
+import Licencias from '../views/viewsAdmin/Licencias.vue'
+import Certificados from '../views/viewsAdmin/Certificados.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -29,10 +27,8 @@ const routes = [
   {path: '/viewsAdmin/usuarios', name: 'Usuarios', component: Usuarios, meta: { requiresAuth: true }},
   {path: '/viewsAdmin/reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true }},
   {path: '/viewsAdmin/agenda', name: 'Agenda', component: AdminAgenda, meta: { requiresAuth: true }},
-  //Subrutas de admin
-  {path: '/viewsAdmin/Licencias/WindowsLicencias', name: 'licencia_windows', component: WindowsLicencias, meta: { requiresAuth: true }},
-  {path: '/viewsAdmin/Licencias/OfficeLicencias', name: 'licencia_Office', component:OfficeLicencias, meta: { requiresAuth: true }},
-  {path: '/viewsAdmin/Licencias/AppaLicencias', name: 'licencia_Appa', component: AppaLicencias, meta: { requiresAuth: true }}
+  {path: '/viewsAdmin/Licencias', name: 'Licencias', component: Licencias, meta: { requiresAuth: true }},
+  {path: '/viewsAdmin/Certificados', name: 'Certificados', component: Certificados, meta: { requiresAuth: true }}  
 ]
 
 const router = new VueRouter({

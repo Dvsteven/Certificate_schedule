@@ -44,7 +44,7 @@ export default {
     return {
       nombre: '',
       tipo: '',
-      tipos: ['SSL', 'TLS', 'HTTPS']
+      tipos: ['Seguridad', 'Calidad', 'Cumplimiento']
     };
   },
   methods: {
@@ -56,8 +56,8 @@ export default {
         nombre: this.nombre,
         tipo: this.tipo
       };
-      // Emitir un evento con la nueva licencia y su tipo
-      this.$emit('add-certificate', newCertificate, this.tipo);
+      // Emitir el evento 'add-certificate' con los datos del nuevo certificado
+      this.$emit('add-certificate', newCertificate);
       this.resetForm();
       this.close();
     },
