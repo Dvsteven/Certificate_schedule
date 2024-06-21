@@ -102,8 +102,8 @@
 </template>
 
 <script>
-import LicenseModal from '@/components/LicenseModal.vue';
-import CertificateModal from '@/components/CertificateModal.vue';
+import LicenseModal from '@/components/Modals/LicenseModal.vue';
+import CertificateModal from '@/components/Modals/CertificateModal.vue';
 
 
 export default {
@@ -116,15 +116,16 @@ export default {
     miniVariant: false,
     showLicensesModal: false,
     showCertificatesModal: false,
+    licenses: [], // Estructura para almacenar las licencias
     links: [
       { icon: 'mdi-account', text: 'Usuarios', route: '/viewsAdmin/usuarios' },
       { icon: 'mdi-file-chart', text: 'Reportes', route: '/viewsAdmin/reportes' },
       { icon: 'mdi-calendar', text: 'Agenda de eventos', route: '/viewsAdmin/agenda' },
     ],
     licenseCategories: [
-      { text: 'Windows', route: '/viewsAdmin/licencias/windows' },
-      { text: 'Office', route: '/viewsAdmin/licencias/office' },
-      { text: 'APPA', route: '/viewsAdmin/licencias/appa' }
+      { text: 'Windows', route: '/viewsAdmin/licencias/WindowsLicencias' },
+      { text: 'Office', route: '/viewsAdmin/licencias/OfficeLicencias' },
+      { text: 'APPA', route: '/viewsAdmin/licencias/AppaLicencias' }
     ],
     certificateCategories: [
       { text: 'Certificados de Seguridad', route: '/viewsAdmin/certificados/seguridad' },
@@ -132,12 +133,29 @@ export default {
       { text: 'Certificados de Cumplimiento', route: '/viewsAdmin/certificados/cumplimiento' }
     ]
   }),
+  created() {
+    // Escuchar el evento de nueva licencia y enviarla a la vista correspondiente
+    this.$root.$on('add-license', this.addLicense);
+  },
+  mounted() {
+    // Cargar licencias desde localStorage al montar el componente
+    this.loadLicenses();
+  },
   methods: {
     goToLogin() {
       this.$router.push({ name: 'Login' });
     },
     toggleDrawer() {
       this.miniVariant = !this.miniVariant;
+    },
+    loadLicenses() {
+      this.licenses = JSON.parse(localStorage.getItem('windowsLicenses')) || [];
+    },
+    saveLicenses() {
+      localStorage.setItem('windowsLicenses', JSON.stringify(this.licenses));
+    },
+    addLicense(newLicense) {
+      this.licenses.push(newLicense);
     },
     navigateToCategory(type, route) {
       this.$router.push(route);

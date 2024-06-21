@@ -13,8 +13,8 @@ import Reportes from '../views/viewsAdmin/Reportes.vue'
 import AdminAgenda from '../views/viewsAdmin/Agenda.vue'
 //subvistas de aadmin
 import WindowsLicencias from '../views/viewsAdmin/Licencias/WindowsLicencias.vue';
-
-
+import OfficeLicencias from '../views/viewsAdmin/Licencias/OfficeLicencias.vue';
+import AppaLicencias from '../views/viewsAdmin/Licencias/AppaLicencias.vue';
 Vue.use(VueRouter)
 
 const routes = [
@@ -30,7 +30,9 @@ const routes = [
   {path: '/viewsAdmin/reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true }},
   {path: '/viewsAdmin/agenda', name: 'Agenda', component: AdminAgenda, meta: { requiresAuth: true }},
   //Subrutas de admin
-  {path: '/viewsAdmin/Licencias/WindowsLicencias', name: 'licencia_windows', component: WindowsLicencias, meta: { requiresAuth: true }}
+  {path: '/viewsAdmin/Licencias/WindowsLicencias', name: 'licencia_windows', component: WindowsLicencias, meta: { requiresAuth: true }},
+  {path: '/viewsAdmin/Licencias/OfficeLicencias', name: 'licencia_Office', component:OfficeLicencias, meta: { requiresAuth: true }},
+  {path: '/viewsAdmin/Licencias/AppaLicencias', name: 'licencia_Appa', component: AppaLicencias, meta: { requiresAuth: true }}
 ]
 
 const router = new VueRouter({
