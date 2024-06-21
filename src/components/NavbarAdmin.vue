@@ -35,12 +35,12 @@
           <v-flex class="mt-4 mb-4">
             <!-- Botón para mostrar el modal de Registrar Licencias -->
             <v-btn block color="primary" @click="showLicensesModal = true" :class="{ 'mini-button': miniVariant }">
-              <v-icon left>mdi-plus</v-icon>
+              <v-icon left>mdi-license</v-icon>
               <span v-if="!miniVariant">Registrar licencias</span>
             </v-btn>
             <!-- Botón para mostrar el modal de Registrar Certificados -->
             <v-btn block color="primary" @click="showCertificatesModal = true" :class="{ 'mini-button': miniVariant }">
-              <v-icon left>mdi-plus</v-icon>
+              <v-icon left>mdi-certificate</v-icon>
               <span v-if="!miniVariant">Registrar certificados</span>
             </v-btn>
           </v-flex>
@@ -54,41 +54,6 @@
               <v-list-item-title v-if="!miniVariant">{{ link.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
-          <!-- Submenú de Licencias -->
-          <v-list-group>
-            <template v-slot:activator>
-              <v-list-item-action>
-                <v-icon>mdi-license</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title v-if="!miniVariant">Licencias</v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <v-list-item v-for="category in licenseCategories" :key="category.text" @click="navigateToCategory('Licencias', category.route)">
-              <v-list-item-content>
-                <v-list-item-title>{{ category.text }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-
-          <!-- Submenú de Certificados -->
-          <v-list-group>
-            <template v-slot:activator>
-              <v-list-item-action>
-                <v-icon>mdi-certificate</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title v-if="!miniVariant">Certificados</v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <v-list-item v-for="category in certificateCategories" :key="category.text" @click="navigateToCategory('Certificados', category.route)">
-              <v-list-item-content>
-                <v-list-item-title>{{ category.text }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-
         </v-list>
       </v-responsive>
     </v-navigation-drawer>
@@ -105,41 +70,37 @@
 import LicenseModal from '@/components/Modals/LicenseModal.vue';
 import CertificateModal from '@/components/Modals/CertificateModal.vue';
 
-
 export default {
   components: {
     LicenseModal,
     CertificateModal
   },
-  data: () => ({
-    drawer: true,
-    miniVariant: false,
-    showLicensesModal: false,
-    showCertificatesModal: false,
-    licenses: [], // Estructura para almacenar las licencias
-    links: [
-      { icon: 'mdi-account', text: 'Usuarios', route: '/viewsAdmin/usuarios' },
-      { icon: 'mdi-file-chart', text: 'Reportes', route: '/viewsAdmin/reportes' },
-      { icon: 'mdi-calendar', text: 'Agenda de eventos', route: '/viewsAdmin/agenda' },
-    ],
-    licenseCategories: [
-      { text: 'Windows', route: '/viewsAdmin/licencias/WindowsLicencias' },
-      { text: 'Office', route: '/viewsAdmin/licencias/OfficeLicencias' },
-      { text: 'APPA', route: '/viewsAdmin/licencias/AppaLicencias' }
-    ],
-    certificateCategories: [
-      { text: 'Certificados de Seguridad', route: '/viewsAdmin/certificados/seguridad' },
-      { text: 'Certificados de Calidad', route: '/viewsAdmin/certificados/calidad' },
-      { text: 'Certificados de Cumplimiento', route: '/viewsAdmin/certificados/cumplimiento' }
-    ]
-  }),
+  data() {
+    return {
+      drawer: true,
+      miniVariant: false,
+      showLicensesModal: false,
+      showCertificatesModal: false,
+      licenses: [], // Estructura para almacenar las licencias
+      certificates: [], // Estructura para almacenar los certificados
+      links: [
+        { icon: 'mdi-account', text: 'Usuarios', route: '/viewsAdmin/usuarios' },
+        { icon: 'mdi-file-chart', text: 'Reportes', route: '/viewsAdmin/reportes' },
+        { icon: 'mdi-calendar', text: 'Agenda de eventos', route: '/viewsAdmin/agenda' },
+        { icon: 'mdi-license', text: 'Lista de Licencias', route: '/viewsAdmin/licencias' },
+        { icon: 'mdi-certificate', text: 'Lista de certificados', route: '/viewsAdmin/certificados' }
+      ],
+    };
+  },
   created() {
-    // Escuchar el evento de nueva licencia y enviarla a la vista correspondiente
+    // Escuchar el evento de nueva licencia y nuevo certificado
     this.$root.$on('add-license', this.addLicense);
+    this.$root.$on('add-certificate', this.addCertificate);
   },
   mounted() {
-    // Cargar licencias desde localStorage al montar el componente
+    // Cargar licencias y certificados desde localStorage al montar el componente
     this.loadLicenses();
+    this.loadCertificates();
   },
   methods: {
     goToLogin() {
@@ -149,13 +110,24 @@ export default {
       this.miniVariant = !this.miniVariant;
     },
     loadLicenses() {
-      this.licenses = JSON.parse(localStorage.getItem('windowsLicenses')) || [];
+      this.licenses = JSON.parse(localStorage.getItem('allLicenses')) || [];
     },
     saveLicenses() {
-      localStorage.setItem('windowsLicenses', JSON.stringify(this.licenses));
+      localStorage.setItem('allLicenses', JSON.stringify(this.licenses));
     },
     addLicense(newLicense) {
       this.licenses.push(newLicense);
+      this.saveLicenses();
+    },
+    loadCertificates() {
+      this.certificates = JSON.parse(localStorage.getItem('allCertificates')) || [];
+    },
+    saveCertificates() {
+      localStorage.setItem('allCertificates', JSON.stringify(this.certificates));
+    },
+    addCertificate(newCertificate) {
+      this.certificates.push(newCertificate);
+      this.saveCertificates();
     },
     navigateToCategory(type, route) {
       this.$router.push(route);
