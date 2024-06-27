@@ -10,7 +10,7 @@ import Visualizar from '../views/Visualizar.vue'
 import AdminDashboard from '../views/viewsAdmin/AdminDashboard.vue'
 import Usuarios from '../views/viewsAdmin/Usuarios.vue'
 import Reportes from '../views/viewsAdmin/Reportes.vue'
-import AdminAgenda from '../views/viewsAdmin/Agenda.vue'
+import AdminAgenda from '../views/viewsAdmin/AgendaAdmin.vue'
 import Licencias from '../views/viewsAdmin/Licencias.vue'
 import Certificados from '../views/viewsAdmin/Certificados.vue'
 Vue.use(VueRouter)
@@ -26,7 +26,7 @@ const routes = [
   {path: '/viewsAdmin/dashboard', name: 'AdminDashboard', component: AdminDashboard, meta: { requiresAuth: true }},
   {path: '/viewsAdmin/usuarios', name: 'Usuarios', component: Usuarios, meta: { requiresAuth: true }},
   {path: '/viewsAdmin/reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true }},
-  {path: '/viewsAdmin/agenda', name: 'Agenda', component: AdminAgenda, meta: { requiresAuth: true }},
+  {path: '/viewsAdmin/AgendaAdmin', name: 'Agenda', component: AdminAgenda, meta: { requiresAuth: true }},
   {path: '/viewsAdmin/Licencias', name: 'Licencias', component: Licencias, meta: { requiresAuth: true }},
   {path: '/viewsAdmin/Certificados', name: 'Certificados', component: Certificados, meta: { requiresAuth: true }}  
 ]

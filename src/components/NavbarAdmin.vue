@@ -86,7 +86,7 @@ export default {
       links: [
         { icon: 'mdi-account', text: 'Usuarios', route: '/viewsAdmin/usuarios' },
         { icon: 'mdi-file-chart', text: 'Reportes', route: '/viewsAdmin/reportes' },
-        { icon: 'mdi-calendar', text: 'Agenda de eventos', route: '/viewsAdmin/agenda' },
+        { icon: 'mdi-calendar', text: 'Agenda de eventos', route: '/viewsAdmin/AgendaAdmin' },
         { icon: 'mdi-license', text: 'Lista de Licencias', route: '/viewsAdmin/licencias' },
         { icon: 'mdi-certificate', text: 'Lista de certificados', route: '/viewsAdmin/certificados' }
       ],

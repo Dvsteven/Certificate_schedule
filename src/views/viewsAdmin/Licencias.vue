@@ -56,9 +56,9 @@
         this.licenses.push(newLicense);
         this.saveLicenses();
       },
-      editLicense(license) {
-        // Implementar lógica de edición de licencias
-      },
+      // editLicense(license) {
+      //   // Implementar lógica de edición de licencias
+      // },
       deleteLicense(license) {
         const index = this.licenses.indexOf(license);
         if (index > -1) {
