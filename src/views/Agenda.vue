@@ -1,121 +1,246 @@
 <template>
-    <div class="agenda">
-      <!-- Calendario dinámico -->
-      <v-calendar
-        v-model="selectedDate"
-        :week-start="1"
-        :events="events"
-        @change="handleDateChange"
-      ></v-calendar>
-  
-      <!-- Formulario para crear recordatorio y agendar reunión -->
-      <v-container>
-        <v-row>
-          <!-- Formulario para crear recordatorio -->
-          <v-col cols="12" md="6">
-            <v-card class="mt-4" height="100%">
-              <v-card-title>Crear Recordatorio</v-card-title>
-              <v-card-text>
-                <v-text-field v-model="reminder.title" label="Título"></v-text-field>
-                <v-text-field v-model="reminder.date" label="Fecha"></v-text-field>
-                <v-btn @click="addReminder" color="primary">Crear</v-btn>
-              </v-card-text>
-            </v-card>
-          </v-col>
-  
-          <!-- Formulario para agendar reunión -->
-          <v-col cols="12" md="6">
-            <v-card class="mt-4" height="100%">
-              <v-card-title>Agendar Reunión</v-card-title>
-              <v-card-text>
-                <v-text-field v-model="meeting.title" label="Título"></v-text-field>
-                <v-text-field v-model="meeting.participants" label="Participantes"></v-text-field>
-                <v-text-field v-model="meeting.date" label="Fecha"></v-text-field>
-                <v-btn @click="scheduleMeeting" color="primary">Agendar</v-btn>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-  
-      <!-- Lista de licencias y certificados con fechas de vencimiento -->
-      <v-card class="mt-4">
-        <v-card-title>Fechas de Vencimiento</v-card-title>
-        <v-card-text>
-          <v-list>
-            <v-list-item v-for="item in deadlines" :key="item.id">
-              <v-list-item-content>
-                <v-list-item-title>{{ item.name }}</v-list-item-title>
-                <v-list-item-subtitle>{{ item.deadline }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card-text>
-      </v-card>
-    </div>
-  </template>
-  
-  <script>
-  import VCalendar from 'v-calendar';
-  
-  export default {
-    components: {
-      VCalendar,
+  <v-container>
+    <v-row>
+      <v-col cols="12" md="4">
+        <v-btn @click="openDialog">Crear Nuevo Evento</v-btn>
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Nuevo Evento</span>
+            </v-card-title>
+            <v-card-text>
+              <v-form ref="form" v-model="valid" lazy-validation>
+                <v-text-field
+                  v-model="event.name"
+                  :rules="[rules.required]"
+                  label="Nombre del Evento"
+                  required
+                ></v-text-field>
+                <v-menu
+                  ref="dateMenu"
+                  v-model="dateMenu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="event.date"
+                      label="Fecha del Evento"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="event.date"
+                    no-title
+                    scrollable
+                    @input="dateMenu = false"
+                  ></v-date-picker>
+                </v-menu>
+                <v-menu
+                  ref="startMenu"
+                  v-model="startMenu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="event.startTime"
+                      label="Tiempo de Inicio"
+                      prepend-icon="mdi-clock"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker
+                    v-if="startMenu"
+                    v-model="event.startTime"
+                    full-width
+                    @click:minute="$refs.startMenu.save(event.startTime)"
+                  ></v-time-picker>
+                </v-menu>
+                <v-menu
+                  ref="endMenu"
+                  v-model="endMenu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="event.endTime"
+                      label="Tiempo de Fin"
+                      prepend-icon="mdi-clock"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-time-picker
+                    v-if="endMenu"
+                    v-model="event.endTime"
+                    full-width
+                    @click:minute="$refs.endMenu.save(event.endTime)"
+                  ></v-time-picker>
+                </v-menu>
+                <v-autocomplete
+                  v-model="event.people"
+                  :items="people"
+                  :search-input.sync="search"
+                  item-text="name"
+                  item-value="email"
+                  label="Agregar Personas"
+                  chips
+                  clearable
+                  multiple
+                ></v-autocomplete>
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDialog">Cancelar</v-btn>
+              <v-btn color="blue darken-1" text @click="saveEvent">Guardar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
+      <v-col cols="12" md="8">
+        <div class="d-flex justify-space-between align-center mb-3">
+          <v-btn icon @click="prevMonth">
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+          <div>{{ formattedMonthYear }}</div>
+          <v-btn icon @click="nextMonth">
+            <v-icon>mdi-chevron-right</v-icon>
+          </v-btn>
+        </div>
+        <v-calendar
+          v-model="selectedDate"
+          ref="calendar"
+          @click:date="date => selectedDate = date"
+          :events="events"
+          color="primary"
+          show-event="true"
+        >
+          <template v-slot:day="{ day, outside }">
+            <div :class="{ 'v-btn--active': isToday(day) }">
+              <span>{{ day.date }}</span>
+            </div>
+          </template>
+        </v-calendar>
+        <v-btn @click="goToToday">Ir a Hoy</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      dialog: false,
+      valid: false,
+      event: {
+        name: '',
+        date: null,
+        startTime: null,
+        endTime: null,
+        people: []
+      },
+      people: [
+        { name: 'John Doe', email: 'john@example.com' },
+        { name: 'Jane Smith', email: 'jane@example.com' }
+      ],
+      search: '',
+      selectedDate: new Date().toISOString().substr(0, 10),
+      startMenu: false,
+      endMenu: false,
+      dateMenu: false,
+      events: [],
+      rules: {
+        required: value => !!value || 'Requerido.',
+      }
+    };
+  },
+  computed: {
+    formattedMonthYear() {
+      const options = { year: 'numeric', month: 'long' };
+      return new Date(this.selectedDate).toLocaleDateString('es-ES', options);
+    }
+  },
+  methods: {
+    openDialog() {
+      this.dialog = true;
     },
-    data() {
-      return {
-        selectedDate: new Date(),
-        reminder: {
-          title: '',
-          date: '',
-        },
-        meeting: {
-          title: '',
-          participants: '',
-          date: '',
-        },
-        events: [], // Eventos del calendario
-        deadlines: [ // Fechas de vencimiento de licencias y certificados
-          { id: 1, name: 'Licencia 1', deadline: '2024-06-30' },
-          { id: 2, name: 'Certificado 1', deadline: '2024-07-15' },
-        ],
+    closeDialog() {
+      this.dialog = false;
+      this.resetForm();
+    },
+    saveEvent() {
+      if (this.$refs.form.validate()) {
+        this.events.push({ ...this.event });
+        this.closeDialog();
+      }
+    },
+    resetForm() {
+      this.event = {
+        name: '',
+        date: null,
+        startTime: null,
+        endTime: null,
+        people: []
       };
+      this.$refs.form.reset();
     },
-    methods: {
-    //   handleDateChange(selectedDate) {
-    //     // Lógica para cambiar la fecha seleccionada
-    //     alert('Fecha seleccionada: ' + selectedDate);
-    //   },
-      addReminder() {
-        // Lógica para agregar un recordatorio
-        this.events.push({
-          title: this.reminder.title,
-          date: new Date(this.reminder.date),
-        });
-        alert('Recordatorio creado: ' + JSON.stringify(this.reminder));
-        // Reiniciar el formulario
-        this.reminder.title = '';
-        this.reminder.date = '';
-      },
-      scheduleMeeting() {
-        // Lógica para agendar una reunión
-        this.events.push({
-          title: this.meeting.title,
-          date: new Date(this.meeting.date),
-        });
-        alert('Reunión agendada: ' + JSON.stringify(this.meeting));
-        // Reiniciar el formulario
-        this.meeting.title = '';
-        this.meeting.participants = '';
-        this.meeting.date = '';
-      },
+    isToday(day) {
+      const today = new Date().toISOString().substr(0, 10);
+      return day.date === today;
     },
-  };
-  </script>
-  
-  <style scoped>
-  .agenda {
-    padding: 20px;
+    goToToday() {
+      this.selectedDate = new Date().toISOString().substr(0, 10);
+      this.$refs.calendar.move(this.selectedDate);
+    },
+    prevMonth() {
+      const date = new Date(this.selectedDate);
+      date.setMonth(date.getMonth() - 1);
+      this.selectedDate = date.toISOString().substr(0, 10);
+      this.$refs.calendar.move(this.selectedDate);
+    },
+    nextMonth() {
+      const date = new Date(this.selectedDate);
+      date.setMonth(date.getMonth() + 1);
+      this.selectedDate = date.toISOString().substr(0, 10);
+      this.$refs.calendar.move(this.selectedDate);
+    }
   }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+.v-btn--active {
+  background-color: #1976d2 !important;
+  color: white !important;
+}
+.d-flex {
+  display: flex;
+}
+.justify-space-between {
+  justify-content: space-between;
+}
+.align-center {
+  align-items: center;
+}
+.mb-3 {
+  margin-bottom: 1rem;
+}
+</style>
