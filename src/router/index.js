@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 //vistas de usuario
+import Landing from '../views/Landing.vue'
 import Dashboard from '../views/UserDashboard.vue'
 import Agenda from '../views/Agenda.vue'
 import Email from '../views/Email.vue'
@@ -18,6 +19,7 @@ Vue.use(VueRouter)
 const routes = [
   //Ruta principal, Login
   {path: '/', name: 'Login', component: Login,},
+  {path: '/Landing', name: 'Landing Page', component: Landing, meta: { requiresAuth: true }},
   {path: '/UserDashboard', name: 'Panel Principal', component: Dashboard, meta: { requiresAuth: true }},
   {path: '/agenda', name: 'Eventos', component: Agenda, meta: { requiresAuth: true }},
   {path: '/email', name: 'Redactar Correo', component: Email, meta: { requiresAuth: true }},

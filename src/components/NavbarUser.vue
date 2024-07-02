@@ -27,16 +27,13 @@
       <v-responsive>
         <v-layout column align-center>
           <v-flex class="mt-5">
-            <v-avatar :size="miniVariant ? 50 : 100" class="avatar">
+            <v-avatar :size="miniVariant ? 50 : 100" class="avatar" @click="editarPerfil">
               <img src="../../public/user.jpg" alt="">
+              <v-icon class="edit-icon" small>mdi-pencil</v-icon>
             </v-avatar>
             <p class="white--text subheading mt-1 text-center" v-if="!miniVariant">Usuario</p>
           </v-flex>
           <v-flex class="mt-4 mb-4">
-            <v-btn color="primary" @click="mostrarModal = true" :class="{ 'mini-button': miniVariant }">
-              <v-icon left>add</v-icon>
-              <span v-if="!miniVariant">Nuevo Usuario</span>
-            </v-btn>
           </v-flex>
         </v-layout>
         <v-list flat>
@@ -74,6 +71,10 @@ export default {
     toggleDrawer() {
       // Cambiar el estado de la barra lateral entre expandida y minimizada
       this.miniVariant = !this.miniVariant;
+    },
+    editarPerfil() {
+      // Redirigir al usuario a la página de edición de perfil
+      this.$router.push({ name: 'EditarPerfil' });
     }
   }
 };
@@ -85,7 +86,21 @@ export default {
   margin: 10px 0;
 }
 .avatar {
+  position: relative;
+  cursor: pointer;
   transition: width 0.3s, height 0.3s;
+}
+.avatar:hover .edit-icon {
+  opacity: 1;
+}
+.edit-icon {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  padding: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  color: white;
 }
 .mini-button {
   padding: 0 12px;

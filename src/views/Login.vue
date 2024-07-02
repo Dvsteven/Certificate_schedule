@@ -59,12 +59,12 @@ export default {
       if (this.username === 'admin' && this.password === 'adminpassword') {
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('userType', 'admin');
-        this.$router.push({ name: 'AdminDashboard' });
+        this.$router.push({ name: 'AdminDashboard' }); //Redirecciona a su vista inicial
         this.$emit('userTypeChanged');
       } else if (this.username === 'user' && this.password === 'userpassword') {
         localStorage.setItem('isLoggedIn', true);
         localStorage.setItem('userType', 'user');
-        this.$router.push({ name: 'Panel Principal' });
+        this.$router.push({ name: 'Landing Page' }); //Redirecciona a su vista inicial
         this.$emit('userTypeChanged');
       } else {
         alert('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
