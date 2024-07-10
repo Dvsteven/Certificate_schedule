@@ -67,6 +67,7 @@
   </div>
 </template>
 
+
 <script>
 import LicenseModal from '@/components/Modals/LicenseModal.vue';
 import CertificateModal from '@/components/Modals/CertificateModal.vue';
@@ -102,6 +103,10 @@ export default {
     // Cargar licencias y certificados desde localStorage al montar el componente
     this.loadLicenses();
     this.loadCertificates();
+
+    // Añadir listener para el cambio de tamaño de la ventana
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize(); // Llamar inmediatamente para ajustar según el tamaño inicial
   },
   methods: {
     goToLogin() {
@@ -133,7 +138,14 @@ export default {
     editarPerfil() {
       // Redirigir al usuario a la página de edición de perfil
       this.$router.push({ name: 'EditarPerfil' });
+    },
+    handleResize() {
+    if (window.innerWidth < 600) {
+      this.drawer = false; // Minimizar la barra lateral en pantallas pequeñas
+    } else {
+      this.drawer = true; // Mostrar la barra lateral en pantallas grandes
     }
+  },
   }
 };
 </script>
